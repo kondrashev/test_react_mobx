@@ -1,18 +1,26 @@
 // @ts-nocheck
 import React from "react";
 import ReactDOM from "react-dom";
-import { observable } from "mobx";
+import { observable, action, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 
-const counterState = observable({ count: 0 });
-
+const handleIncrement = () => {
+  counterState.count++;
+};
+const handleDecrement = () => {
+  counterState.count--;
+};
+const counterState = {
+  count: 0,
+  handleIncrement,
+  handleDecrement,
+};
+makeObservable(counterState, {
+  count: observable,
+  handleIncrement: action,
+  handleDecrement: action,
+});
 const App = observer(() => {
-  const handleIncrement = () => {
-    counterState.count++;
-  };
-  const handleDecrement = () => {
-    counterState.count--;
-  };
   return (
     <>
       <h1>{counterState.count}</h1>
